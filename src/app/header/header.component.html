@@ -1,0 +1,23 @@
+<p>
+    <mat-toolbar>
+        
+      <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button> -->
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>מצב ניהול</button>
+  <button mat-menu-item>מצב משחק</button>
+</mat-menu>
+      <div>
+          <span>Little Linguist</span>
+          <span class="example-spacer"></span>
+      </div>
+      <button mat-icon-button class="example-icon person" aria-label="Example icon-button with heart icon">
+        <mat-icon>person</mat-icon>
+      </button>
+    </mat-toolbar>
+    
+  </p>
