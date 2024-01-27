@@ -1,10 +1,13 @@
 import { Languages } from "./languages";
+import { TranslatedWord } from "./TranslatedWord"
 
-export interface Category{
-    name:string;
-    id: number;
-    last_edit_date: Date;
-    target_language:Languages;
-    source_language:Languages;
-    arrayWords: Map<string, string>;
+export class Category {
+    constructor(
+        public id: number,
+        public name: string,
+        public last_edit_date: Date,
+        public target_language: Languages,
+        public source_language: Languages,
+        public arrayWords: TranslatedWord[]
+    ) {}
 }
