@@ -1,0 +1,17 @@
+<div>
+    <h1>Let's play</h1>
+    <h2>Choose Category</h2>
+    <mat-form-field>
+        <mat-label>Choose Category</mat-label>
+        <mat-select [(value)]="chosenCategory">
+            @for (category of allCategories; track category) {
+            <mat-option [value]="category.id">{{category.name}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <div class="button">
+        <button mat-raised-button>
+            <a [routerLink]="['/play/', chosenCategory]">Play</a>
+        </button>
+    </div>
+</div>

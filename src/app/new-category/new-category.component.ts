@@ -60,7 +60,6 @@ export class NewCategoryComponent implements OnInit {
       } else {
         this.currentCategory = new Category(0, "", new Date(), Languages.English, Languages.Hebrew, []);
       }
-      // this.currentCategory = this.categories[this.id];
     } else {
       this.currentCategory = new Category(0, "", new Date(), Languages.English, Languages.Hebrew, []);
     }
@@ -68,9 +67,6 @@ export class NewCategoryComponent implements OnInit {
 
 
   submitRegistrationForm() {
-    console.log("Form submitted!")
-    
-    console.log(this.currentCategory)
     if (this.id) {
       this.categoriesService.Update(this.currentCategory);
     } else {
@@ -86,7 +82,6 @@ export class NewCategoryComponent implements OnInit {
   submitWord() {
     console.log(this.currentWord);
     this.arrayOfWords = [...this.arrayOfWords , this.currentWord]
-    console.log(this.arrayOfWords)
     this.currentCategory.arrayWords = [...this.arrayOfWords];
     this.currentWord = {
       origin: "",

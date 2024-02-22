@@ -1,0 +1,9 @@
+.target{
+    display: inline;
+}
+
+.divButtons{
+    margin: 10px;
+    display: flex;
+    gap: 10px;
+}

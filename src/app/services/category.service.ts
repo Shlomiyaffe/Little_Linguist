@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable , OnInit} from '@angular/core';
 import { Category } from '../shared/Category/Category';
 import { Languages } from '../shared/Category/languages';
 // import { Fruit } from '../shared/Category/Fruit';
@@ -15,37 +15,94 @@ import { Languages } from '../shared/Category/languages';
 //   new OurBody(new Date(), Languages.Hebrew, Languages.English)
 // ]
 
-export class CategoryService {
+export class CategoryService  {
   categories = new Map<number, Category>();
   // categories = categories1;
+  private readonly NEXT_ID_KEY = 'nextId';
+  private readonly CATEGORIES_KEY = 'categories';
   nextId = 1;
-  constructor() {  }
+  // categories= this.getCategories()
 
-  list() : Category[]{
-    return Array.from(this.categories.values());
+
+  constructor() { }
+
+  private getNextId(): number {
+    let nextIdString = localStorage.getItem(this.NEXT_ID_KEY);
+    return nextIdString ? parseInt(nextIdString) : 0;
+  }
+  private setNextId(id: number): void {
+    localStorage.setItem(this.NEXT_ID_KEY, id.toString());
   }
 
-  get(id : number) : Category | undefined{
-    return this.categories.get(id);
+
+  private setCategories(allCategories: Map<number, Category>): void {
+    localStorage.setItem(this.CATEGORIES_KEY,
+      JSON.stringify(Array.from(allCategories.values())));
   }
 
-  add(newCategory : Category): void {
-    let newId = this.nextId;
+  private getCategories(): Map<number, Category> {
+    let CategoryString = localStorage.getItem(this.CATEGORIES_KEY);
+    let idToCategory = new Map<number, Category>();
+
+    if (CategoryString) {
+      JSON.parse(CategoryString).forEach((Category: Category) => {
+        idToCategory.set(Category.id, Category);
+      });
+    }
+    return idToCategory;
+  }
+
+  list(): Category[] {
+    return Array.from(this.getCategories().values());
+  }
+
+  get(id: number): Category | undefined {
+    this.categories= this.getCategories()
+    if (!this.categories.has(id)) {
+      throw new Error(
+      "Failed to retrieve person by id: " +
+      id);
+      }
+    return this.getCategories().get(id);
+  }
+
+  add(newCategory: Category): void {
+    let newId = this.getNextId();
+    let categoriesMap = this.getCategories();
     newCategory.id = newId
-    this.categories.set(newId, newCategory);
-    ++this.nextId;
+    categoriesMap.set(newId, newCategory);
+    this.setCategories(categoriesMap)
+    this.setNextId(++newId);
   }
 
-  Update(existingCategory : Category): void {
-    if(this.categories.has(existingCategory.id)){
-      this.categories.set(existingCategory.id, existingCategory)
-    }
+  Update(existingCategory: Category): void {
+    this.categories= this.getCategories();
+    if (!this.categories.has(existingCategory.id)) {
+      throw new Error(
+      "Failed to update person by id: " +
+      existingCategory.id);
+      }
+    let categoriesMap = this.getCategories();
+    categoriesMap.set(existingCategory.id, existingCategory);
+    this.setCategories(categoriesMap)
+    // if (this.categories.has(existingCategory.id)) {
+    //   this.categories.set(existingCategory.id, existingCategory)
+    // }
   }
 
-  delete(existingCategoryId : number): void {
-    if(this.categories.has(existingCategoryId)){
-      this.categories.delete(existingCategoryId)
-    }
-  }
+  delete(existingCategoryId: number): void {
+    this.categories= this.getCategories()
+    if (!this.categories.delete(existingCategoryId)) {
+      throw new Error(
+      "Failed to delete person by id: " +
+      existingCategoryId);
+      }
+    let categoriesMap = this.getCategories();
+    categoriesMap.delete(existingCategoryId);
+    this.setCategories(categoriesMap)
 
+    // if (this.categories.has(existingCategoryId)) {
+    //   this.categories.delete(existingCategoryId)
+    // }
+  }
 }

@@ -1,0 +1,26 @@
+<div>
+    <h1>Translate - {{currentCategory!.name}} </h1>
+ 
+        <div *ngFor="let word of arrayWords; let i = index">
+            <h4>Origin : {{word.origin}}</h4>
+            <h4 class="target">Target : </h4> <input  [(ngModel)]="inputValues[i]">
+            <span *ngIf="comparisonResults.length && comparisonResults[i]"><mat-icon>check</mat-icon>
+            </span>
+            <span *ngIf="comparisonResults.length && !comparisonResults[i]"><mat-icon>close</mat-icon></span>
+        </div>
+  
+        <div class="divButtons">
+            <button (click)="checkWords()" mat-raised-button color="primary">
+                check
+            </button>
+    
+            <button (click)="showTranslate()"  mat-raised-button color="primary">
+                Translate <mat-icon>remove_red_eye</mat-icon>
+            </button>
+        </div>
+
+        <div>
+            <p *ngIf="showSummary && getCorrectCount() === arrayWords.length">Well done , You finished</p> 
+            <p *ngIf="showSummary && getCorrectCount() !== arrayWords.length">You translted: {{ getCorrectCount() }} correct out of {{arrayWords.length}}</p> 
+        </div>
+</div>
